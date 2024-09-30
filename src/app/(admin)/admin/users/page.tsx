@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Trash } from "@/components/icons/trash";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +14,7 @@ const Users = () => {
   useEffect(() => {
     const fettchUsers = async () => {
       setLoading(true);
-      setError(null);
+      setError("");
 
       try {
         const response = await fetch("/api/users");
@@ -38,7 +41,26 @@ const Users = () => {
       {loading ? (
         <div>loading...</div>
       ) : (
-        users.length > 0 && <p>{JSON.stringify(users, null, 4)}</p>
+        users.length > 0 && (
+          <Table className="w-2/3">
+            <TableBody>
+              {users.map((user: any) => (
+                <TableRow>
+                  <TableCell>{user?.name}</TableCell>
+                  <TableCell>{user?.email}</TableCell>
+                  <TableCell>
+                    <Button className="mr-2" variant="secondary">
+                      Generate Password
+                    </Button>
+                    <Button variant="destructive">
+                      <Trash />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )
       )}
     </div>
   );
