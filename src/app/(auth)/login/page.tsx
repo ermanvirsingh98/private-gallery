@@ -24,7 +24,7 @@ export default function SignIn() {
       setError("Invalid email or password");
       console.error(result);
     } else {
-      router.push("/admin/dashboard");
+      router.push("/gallery");
     }
   };
 

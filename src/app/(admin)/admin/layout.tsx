@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import SideMenu from "../_components/SideMenu";
+import SideMenu from "@/components/side-menu";
 
 export const metadata = {
   title: "Next.js",

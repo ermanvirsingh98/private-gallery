@@ -11,20 +11,22 @@ async function main() {
     where: { email: 'admin1@example.com' },
     update: {},
     create: {
+      name: 'User One',
       email: 'admin1@example.com',
       password: hashedAdminPassword,
-      name: 'User One',
+      role: "ADMIN",
       createdBy: new ObjectId().toString()
     },
   });
   
   await prisma.user.upsert({
-    where: { email: 'admin2@example.com' },
+    where: { email: 'user1@example.com' },
     update: {},
     create: {
-      email: 'admin2@example.com',
-      password: hashedAdminPassword,
       name: 'User Two',
+      email: 'user1@example.com',
+      password: hashedAdminPassword,
+      role: "USER",
       createdBy: new ObjectId().toString()
     },
   });

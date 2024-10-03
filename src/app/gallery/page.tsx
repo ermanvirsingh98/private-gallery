@@ -1,17 +1,12 @@
-// import { useRouter } from "next/navigation";
-// import { useState, useEffect } from "react";
 import cloudinary from "cloudinary";
 
-import Cookies from "js-cookie";
-import { Button } from "@/components/ui/button";
-import { CldUploadButton } from "next-cloudinary";
-import { CldImage } from "next-cloudinary";
 import GalleryGrid from "./image-grid";
 import UploadButton from "./upload-button";
+import { ImageGrid } from "@/components/image-grid";
 
 export type SearchResult = {
   public_id: string;
-  // tags: string[];
+  tags: string[];
 };
 
 export default async function AdminDashboard() {
@@ -23,7 +18,7 @@ export default async function AdminDashboard() {
     .max_results(30)
     .execute()) as { resources: SearchResult[] };
 
-  console.log(results);
+  // console.log(results);
 
   return (
     <div className="h-full px-4 py-6 lg:px-8">
@@ -31,6 +26,7 @@ export default async function AdminDashboard() {
         <UploadButton />
       </div>
       <div className="flex flex-wrap gap-5 pb-4">
+        <ImageGrid images={results.resources} />;
         <GalleryGrid images={results.resources} />
       </div>
     </div>

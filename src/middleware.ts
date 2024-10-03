@@ -5,26 +5,31 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   // Check if the user is authenticated
-  const isAuthenticated = req.auth !== null; // Adjust this based on how you determine authentication status
+  const isAuthenticated = req.auth !== null; // Adjust based on your authentication logic
+  const userRole = req.auth?.user?.role; // Assuming req.auth contains user role
 
   // Define routes
   const isLoginPage = pathname.startsWith('/login');
-  const isPublicPage = pathname === '/' || pathname.startsWith('/gallery'); // Modify this based on your public pages
   const isAdminRoute = pathname.startsWith('/admin');
+  const isGalleryRoute = pathname.startsWith('/gallery');
 
-  // Redirect authenticated users from the login page to the dashboard
   if (isLoginPage && isAuthenticated) {
-    return NextResponse.redirect(new URL('/admin/dashboard', req.url)); // Change '/dashboard' to your actual dashboard route
+    return NextResponse.redirect(new URL('/gallery', req.url)); 
   }
 
-  // If it's an admin route and the user is not authenticated, redirect to login
-  if (isAdminRoute && !isAuthenticated) {
+  // If it's an admin route
+  if (isAdminRoute) {
+    // Allow ADMIN users access to all admin routes
+    if (isAuthenticated && userRole === 'ADMIN') {
+      return NextResponse.next(); // Allow access for admin users
+    }
+    // If not authenticated or not an admin, redirect to login
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  // Allow access to public pages
-  if (isPublicPage) {
-    return NextResponse.next();
+  // If it's a gallery route and the user is not authenticated, redirect to login
+  if (isGalleryRoute && !isAuthenticated) {
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
   // If authenticated or not accessing a protected route, proceed
@@ -33,5 +38,5 @@ export default auth((req) => {
 
 export const config = {
   // Apply this middleware to the necessary routes
-  matcher: ['/admin/:path*', '/login', '/'], // Include login and other public paths if needed
+  matcher: ['/admin/:path*', '/login', '/', '/gallery'], // Include login and other public paths if needed
 };
