@@ -1,68 +1,68 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Trash2, UserPen, UserPlus } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash } from "@/components/icons/trash";
+import Layout from "@/app/layouts/layout";
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+import { fetchUsers } from "./actions";
+import Drawer from "@/components/Drawer";
 
-  // Fetching data from an API
-  useEffect(() => {
-    const fettchUsers = async () => {
-      setLoading(true);
-      setError("");
-
-      try {
-        const response = await fetch("/api/users");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setUsers(data);
-      } catch (error: any) {
-        setError(error?.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fettchUsers();
-  }, []);
-
-  // if (loading) return <div>loading...</div>;
-  // if (error) return <div>Error...</div>;
+const Users = async () => {
+  const users: any = await fetchUsers();
 
   return (
-    <div className="h-full px-4 py-6 lg:px-8">
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
-      {loading ? (
-        <div>loading...</div>
-      ) : (
-        users.length > 0 && (
-          <Table className="w-2/3">
-            <TableBody>
-              {users.map((user: any) => (
-                <TableRow>
-                  <TableCell>{user?.name}</TableCell>
-                  <TableCell>{user?.email}</TableCell>
-                  <TableCell>
-                    <Button className="mr-2" variant="secondary">
-                      Generate Password
-                    </Button>
-                    <Button variant="destructive">
-                      <Trash />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )
-      )}
-    </div>
+    <Layout>
+      <div className="p-8">
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold tracking-tight">
+            Users Management
+          </h2>
+          <p className="text-muted-foreground">
+            Here's a list of your all users
+          </p>
+        </div>
+        <div className="flex items-center mb-4">
+          <Button>
+            <UserPlus size="16px" className="mr-2" /> Add Users
+          </Button>
+          {/* <Drawer /> */}
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>ExpiryAt</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {users.map((user: any) => (
+              <TableRow>
+                <TableCell>{user?.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{user.ExpiryAt ?? "No Expiry"}</TableCell>
+                <TableCell>
+                  <Button className="mr-4" variant="destructive">
+                    <Trash2 size="16px" />
+                  </Button>
+                  <Button variant="secondary">
+                    <UserPen size="16px" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </Layout>
   );
 };
 

@@ -19,7 +19,7 @@ const ImageCard = ({ imageData }: { imageData: SearchResult }) => {
   };
 
   return (
-    <div className="w-[250px] relative">
+    <div className="w-[220px] relative">
       <div className="overflow-hidden rounded-md h-full">
         <CldImage
           className="h-full w-full object-cover transition-all hover:scale-105 aspect-[3/4]"

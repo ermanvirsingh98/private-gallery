@@ -3,7 +3,7 @@
 import { CldUploadButton } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus } from "@/components/icons/plus";
+import { ImagePlus } from "lucide-react";
 
 export type UploadResult = {
   info: {
@@ -26,7 +26,7 @@ export default function UploadButton() {
         uploadPreset="jxuwkkev"
       >
         <div className="flex gap-2">
-          <Plus />
+          <ImagePlus size="16px" />
           Upload
         </div>
       </CldUploadButton>

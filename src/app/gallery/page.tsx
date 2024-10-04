@@ -1,8 +1,10 @@
 import cloudinary from "cloudinary";
 
-import GalleryGrid from "./image-grid";
 import UploadButton from "./upload-button";
-import { ImageGrid } from "@/components/image-grid";
+import { ImageGrid } from "@/components/ImageGrid";
+import Layout from "../layouts/layout";
+import { auth } from "@/auth";
+import { ROLES } from "@/const";
 
 export type SearchResult = {
   public_id: string;
@@ -10,6 +12,9 @@ export type SearchResult = {
 };
 
 export default async function AdminDashboard() {
+  const session = await auth();
+  const isAdmin = session?.user.role === ROLES.ADMIN;
+
   const results = (await cloudinary.v2.search
     // .expression(`resource_type:image${search ? ` AND tags=${search}` : ""}`)
     .expression(`resource_type:image`)
@@ -18,17 +23,12 @@ export default async function AdminDashboard() {
     .max_results(30)
     .execute()) as { resources: SearchResult[] };
 
-  // console.log(results);
-
   return (
-    <div className="h-full px-4 py-6 lg:px-8">
-      <div className="text-right py-3">
-        <UploadButton />
-      </div>
-      <div className="flex flex-wrap gap-5 pb-4">
+    <Layout>
+      <div className="text-right px-8 py-4">{isAdmin && <UploadButton />}</div>
+      <div className="flex flex-wrap gap-5 justify-center">
         <ImageGrid images={results.resources} />;
-        <GalleryGrid images={results.resources} />
       </div>
-    </div>
+    </Layout>
   );
 }
