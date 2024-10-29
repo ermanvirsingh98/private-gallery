@@ -1,9 +1,9 @@
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(dashboard)/gallery/page";
 import { CldImage } from "next-cloudinary";
 import React, { useState } from "react";
 import { Heart } from "./icons/heart";
 import { FullHeart } from "./icons/full-heart";
-import { setAsFavoriteAction } from "@/app//gallery/actions";
+import { setAsFavoriteAction } from "@/app/(dashboard)/gallery/actions";
 
 const ImageCard = ({ imageData }: { imageData: SearchResult }) => {
   const [isFavorited, setIsFavorited] = useState(
@@ -19,7 +19,7 @@ const ImageCard = ({ imageData }: { imageData: SearchResult }) => {
   };
 
   return (
-    <div className="w-[220px] relative">
+    <div className="relative">
       <div className="overflow-hidden rounded-md h-full">
         <CldImage
           className="h-full w-full object-cover transition-all hover:scale-105 aspect-[3/4]"
@@ -29,7 +29,11 @@ const ImageCard = ({ imageData }: { imageData: SearchResult }) => {
           alt="an image of something"
         />
       </div>
-      {isFavorited ? (
+      <FullHeart
+        onClick={handleFavoriteToggle}
+        className="absolute top-2 right-3 cursor-pointer"
+      />
+      {/* {isFavorited ? (
         <FullHeart
           onClick={handleFavoriteToggle}
           className="absolute top-2 right-3 cursor-pointer"
@@ -39,7 +43,7 @@ const ImageCard = ({ imageData }: { imageData: SearchResult }) => {
           onClick={handleFavoriteToggle}
           className="absolute top-2 right-3 cursor-pointer"
         />
-      )}
+      )} */}
     </div>
   );
 };

@@ -18,11 +18,11 @@ import { ROLES } from "@/const";
 
 export async function UserNav() {
   const session: any = await auth();
-  const isAdmin = session.user.role === ROLES.ADMIN;
+  const isAdmin = session?.user.role === ROLES.ADMIN;
 
   const getInitials = (fullName: string): string =>
     fullName
-      .split(" ")
+      ?.split(" ")
       .map((name) => name.charAt(0).toUpperCase())
       .join("");
 

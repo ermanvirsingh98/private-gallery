@@ -8,6 +8,7 @@ import {
   Album,
   Heart,
   CornerDownRight,
+  Plus,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -17,11 +18,13 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { ROLES } from "@/const";
+import { Input } from "@/components/ui/input";
 
 const SideMenu = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [albumsOpen, setAlbumsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const session: any = useSession();
   const isAdmin = session?.data?.user?.role === ROLES.ADMIN;
@@ -32,15 +35,7 @@ const SideMenu = () => {
       href: "/gallery",
       icon: <Images size="16px" className="mr-2" />,
     },
-    ...(isAdmin
-      ? [
-          {
-            label: "Favorite",
-            href: "/admin/favorites",
-            icon: <Heart size="16px" className="mr-2" />,
-          },
-        ]
-      : []),
+
     {
       label: "Albums",
       icon: <Album size="16px" className="mr-2" />,
@@ -65,6 +60,14 @@ const SideMenu = () => {
   ];
 
   const toggleAlbums = () => setAlbumsOpen((prev) => !prev);
+
+  const addFolder = async (e: any) => {
+    e.preventDefault();
+
+    if (!searchValue) {
+      console.log(searchValue);
+    }
+  };
 
   return (
     <>
@@ -100,6 +103,22 @@ const SideMenu = () => {
                       </button>
                       {albumsOpen && (
                         <div className="ml-6 mt-2">
+                          <div className="lg:flex gap-1">
+                            <Input
+                              type="email"
+                              placeholder="Enter folder name"
+                              value={searchValue}
+                              onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                            <Button
+                              variant="secondary"
+                              className="border-r-0"
+                              onClick={addFolder}
+                            >
+                              <Plus size="18px" />
+                            </Button>
+                          </div>
+
                           {item.children.map((subItem: any, j: number) => (
                             <Link key={j} href={subItem.href}>
                               <span

@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(dashboard)/gallery/page";
 import ImageCard from "./ImageCard";
 
 export function ImageGrid({ images }: { images: SearchResult[] }) {

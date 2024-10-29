@@ -1,6 +1,6 @@
 "use client";
 import { useFoldersContext } from "@/app/context/FoldersContext";
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(dashboard)/gallery/page";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
